@@ -4,6 +4,11 @@ class HomeController
 {
     public function index()
     {
+        require_once 'View/script.php';
+    }
+
+    public function pedidos()
+    {
         require_once 'View/index.php';
     }
 

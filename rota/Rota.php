@@ -17,6 +17,7 @@ class Rota
         {
             $paramentros=[];
             $url=explode('/',$url);
+            $controMetode=$url[0];///opcional
             $controller= $url[0].'Controller';
             array_shift($url);
 
@@ -40,11 +41,17 @@ class Rota
         }
 
         $camninho='deliverycehma/Controller/'.$controller.'.php';
-
+        
+        
         if(!file_exists($camninho) && !method_exists($controller,$metode))
         {
+           
             $controller="HomeController";
-            $index="index";
+            if(!method_exists($controller,@$controMetode)){
+              $metode="index";            
+            }else{
+                $metode=$controMetode;
+            }
             $paramentros=[];
 
         }

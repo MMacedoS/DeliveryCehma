@@ -15,9 +15,14 @@ class CadastroController{
         $matricula=$_POST['matricula'];
         $telefone=$_POST['telefone'];
         $email=$_POST['email'];
+        $pedido=$_POST['pedido'];
 
-        $resposta=$con->insertDados($nome,$matricula,$email,$telefone);      
-        echo json_encode("dados cadastrados com sucesso!");
+        $resposta=$con->insertDados($nome,$matricula,$email,$telefone,$pedido);   
+                if($resposta){   
+                    echo json_encode($resposta."dados cadastrados com sucesso!");
+                }else{
+                    echo json_encode($resposta."erro ao cadastrar os dados! tente novamente");
+                }
     }
 
 

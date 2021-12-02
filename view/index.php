@@ -1,6 +1,5 @@
 <?php 
 
-define('ROTA_GERAL',"http://$_SERVER[HTTP_HOST]".'/deliverycehma');
 $link="http://$_SERVER[HTTP_HOST]".'/deliverycehma/view/images/img';
 ?>
 <!DOCTYPE html>

@@ -2,21 +2,37 @@
 require_once 'conexao.php';
 class Dados{
 
-  public function insertDados($nome,$matricula,$email,$telefone)
+  public function insertDados($nome,$matricula,$email,$telefone,$pedido)
   {
     $con=new Conexao;
     $con->MontarConexao();
-    $ap=$con->pdo->prepare("INSERT Into cliente (nome,matricula,email,telefone) values(:nome,:matricula,:email,:telefone)");
-    $ap->bindValue(':nome',$nome);
-    $ap->bindValue(':matricula',$matricula);
-    $ap->bindValue(':email',$email);
-    $ap->bindValue(':telefone',$telefone);
-    if($ap->execute()){
-      return true;
-    }else{
+    $verifica=$con->pdo->query("SELECT * from  cliente c where c.email='$email' or c.matricula='$matricula'");
+    $verifica=$verifica->fetchAll(PDO::FETCH_ASSOC);
+          if(count($verifica)==0){
+          $ap=$con->pdo->prepare("INSERT Into cliente (nome,matricula,email,telefone) values(:nome,:matricula,:email,:telefone)");
+          $ap->bindValue(':nome',$nome);
+          $ap->bindValue(':matricula',$matricula);
+          $ap->bindValue(':email',$email);
+          $ap->bindValue(':telefone',$telefone);
+                    if($ap->execute()){
+                      $id=$con->pdo->query("SELECT * from  cliente c where c.email='$email' or c.matricula='$matricula'");
+                      $id=$id->fetchAll(PDO::FETCH_ASSOC);
+                      $ap=$con->pdo->prepare("INSERT Into pedidos set descricao=:email, cliente=:cliente,produto=:produto,status=:status");
+                        $ap->bindValue(':email',$email);
+                        $ap->bindValue(':cliente',$id[0]['codigo']);
+                        $ap->bindValue(':produto',$pedido);
+                        $ap->bindValue(':status','aberto');
+                              if($ap->execute()){
+                                return true;
+                              }
+                      
+                    }else{
 
-    return false;
-    }
+                    return false;
+                    }
+            }else{
+              return false;
+            }
 
   }  
 
